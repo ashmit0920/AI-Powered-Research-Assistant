@@ -21,9 +21,19 @@ def search_papers(query, api_key):
     url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={query}&fields=title,abstract,url"
     headers = {"x-api-key": api_key}
     response = requests.get(url, headers=headers)
-    data = response.json()
-    return data["data"]
-    
+
+    if response.status_code == 200:
+        data = response.json()
+        if "data" in data:
+            return data["data"]
+        else:
+            st.error("Unexpected response format from the API.")
+            st.text(data)
+            return []
+    else:
+        st.error(f"API request failed with status code {response.status_code}")
+        return []
+        
 def summarize_text(text):
     summary = summarizer(text, max_length=150, min_length=30, do_sample=False)[0]["summary_text"]
     return summary
