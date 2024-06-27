@@ -4,3 +4,4 @@ requests
 transformers
 time
 json
+os
