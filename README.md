@@ -3,6 +3,7 @@
 Built using Streamlit, powered by Meta's BART (Bi-directional and Auto-Regressive Transformers) model.
 
 ### Tasks (Under development)
+- [ ] Choose a name for the web app
 - [ ] Mongodb for credentials
 - [ ] Caching using Redis for optimization
 - [ ] Preparing Dockerfile
