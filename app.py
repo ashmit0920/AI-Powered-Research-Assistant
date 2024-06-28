@@ -33,16 +33,15 @@ def display_main_app():
     model = TFAutoModelForSeq2SeqLM.from_pretrained(model_name)
     summarizer = pipeline("summarization", model=model, tokenizer=tokenizer)
 
-    st.title("AI Powered Research Assistant")
+    st.title("Lucid - An AI Powered Research Assistant")
     st.write(f"Welcome! {st.session_state.username}")
-    st.write("This website is designed to help you discover and summarize research papers on your topic of interest.")
+    st.write("This web app is designed to help you discover and summarize research papers on your topic of interest.")
     st.write(f"Enter the topic you are interested in and your Semantic Scholar API Key in the input fields on the sidebar. In case you don't have an API key, you can get it from [this link](https://www.semanticscholar.org/product/api).")
     st.write(f"Wanna give it a try before getting your API Key? You can use our default API Key for 2 free searches!")
 
     # Sidebar
     st.sidebar.header("Research Settings")
     search_query = st.sidebar.text_input("Search Query", "Machine Learning")
-    # api_key = st.sidebar.text_input("Semantic Scholar API Key", type="password")
 
     def search_papers(query, api_key):
         url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={query}&fields=title,abstract,url"

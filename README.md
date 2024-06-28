@@ -1,4 +1,4 @@
-# AI Powered Research Assistant
+# Lucid - An AI Powered Research Assistant
 
 Built using Streamlit, powered by Meta's BART (Bi-directional and Auto-Regressive Transformers) model.
 
