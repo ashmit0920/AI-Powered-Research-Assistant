@@ -54,3 +54,4 @@ docker run -p 8501:8501 Lucid
 - Caching using Redis for optimization
 - Add search history based recommendations
 - User profiles
+- Persistent storage for recording free searches
