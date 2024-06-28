@@ -1,15 +1,47 @@
 # Lucid - An AI Powered Research Assistant
 
-Built using Streamlit, powered by Meta's BART (Bi-directional and Auto-Regressive Transformers) model.
+Lucid is built using Streamlit, and powered by Meta's BART (Bi-directional and Auto-Regressive Transformers) model. The BART-Large-CNN model used for this project is especially fine-tuned for summarization tasks.
 
-### Tasks (Under development)
-- [x] Choose a name for the web app
-- [x] Mongodb for credentials
-- [ ] Caching using Redis for optimization
-- [x] Preparing Dockerfile
-- [x] Offer 2 free searches
-- [x] Finish auth.py (add password encryption and keep api records)
-- [x] Add a login portal
-- [x] Restructure code for authentication and bug fix
-- [ ] Add search history based recommendations (partially done)
-- [ ] Prepare a professional readme
+## Usage
+
+Enter your topic of interest in the "Search Query" field on the sidebar and your Semantic Scholar API key below it. If you want to try out the app first, you can use our default API key for **2 free searches** before getting your own API. Just select "Use a free search" option and click on the Search button. 
+
+Thats it! You would now see a summary of multiple research papers fetched from Semantic Scholar. You can also click on "Read more" to visit the original webpage of that paper.
+
+## Run the app
+
+Clone the repository on your PC.
+```
+git clone https://github.com/ashmit0920/Lucid.git
+```
+Install the required packages.
+```
+pip install -r requirements.txt
+```
+Create a .env file and add your Semantic Scholar API Key and MongoDB URI.
+```
+SEMANTIC_API_KEY='your-api-key'
+MONGO_URI='your-mongodb-connection-string'
+```
+Run the app.
+```
+streamlit run app.py
+```
+
+## Run using Docker
+
+After creating the .env file, build the docker image.
+```
+docker build -t Lucid .
+```
+
+Run the docker container.
+```
+docker run -p 8501:8501 Lucid
+```
+
+## Future Updates
+
+- Caching using Redis for optimization
+- Add search history based recommendations
+- User profiles
