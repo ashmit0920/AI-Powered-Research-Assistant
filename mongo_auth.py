@@ -39,3 +39,11 @@ def authenticate_user(username, password):
 def list_users():
     collection = get_user_collection()
     return list(collection.find({}))
+
+def store_api(username, api_key):
+    credentials = get_user_collection()
+    result = credentials.update_one(
+        {"username": username},
+        {"$set": {"api": api_key}}
+    )
+    # return result.modified_count > 0

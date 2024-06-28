@@ -4,7 +4,7 @@ import requests
 from transformers import pipeline, TFAutoModelForSeq2SeqLM, AutoTokenizer
 from login import login_portal
 from dotenv import load_dotenv
-from auth import store_api
+from mongo_auth import store_api
 import os
 
 load_dotenv()
@@ -95,7 +95,7 @@ def display_main_app():
 
     if api_key_option == "Use your own API key":
         api_key = st.sidebar.text_input("Enter your Semantic Scholar API key", type="password")
-        store_api(st.session_state.username, api_key, 'credentials.json')
+        store_api(st.session_state.username, api_key)
         
     else:
         api_key = None
