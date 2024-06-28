@@ -8,6 +8,15 @@ Enter your topic of interest in the "Search Query" field on the sidebar and your
 
 Thats it! You would now see a summary of multiple research papers fetched from Semantic Scholar. You can also click on "Read more" to visit the original webpage of that paper.
 
+[User interface](./Demo.png)
+
+## Features
+
+- User authentication using MongoDB
+- Semantic Scholar API integration
+- Utilises BART Model for summarization tasks
+- Stores search history
+
 ## Run the app
 
 Clone the repository on your PC.
