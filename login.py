@@ -1,5 +1,5 @@
 import streamlit as st
-from auth import register_user, login_user
+from mongo_auth import register_user, authenticate_user
 import time
 
 def login_portal():
@@ -16,7 +16,7 @@ def login_portal():
         confirm_password = st.text_input('Confirm Password', type='password')
 
         if new_password == confirm_password and st.button('Signup'):
-            register_user(new_username, new_password, 'credentials.json')
+            register_user(new_username, new_password)
             st.success('Signup successful! Please Login to continue.')
             st.balloons()
 
@@ -26,7 +26,7 @@ def login_portal():
         password = st.text_input('Password', type='password')
 
         if st.button('Login'):
-            if login_user(username, password, 'credentials.json'):
+            if authenticate_user(username, password):
                 st.session_state.logged_in = True
                 st.session_state.username = username
                 st.success(f'Please wait, Logging in as {username}...')
