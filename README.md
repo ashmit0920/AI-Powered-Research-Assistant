@@ -11,5 +11,5 @@ Built using Streamlit, powered by Meta's BART (Bi-directional and Auto-Regressiv
 - [ ] Finish storage.py
 - [x] Add a login portal
 - [x] Restructure code for authentication and bug fix
-- [ ] Add search history feature
+- [ ] Add search history based recommendations
 - [ ] Prepare a professional readme
