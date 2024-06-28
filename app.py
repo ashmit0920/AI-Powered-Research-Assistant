@@ -15,6 +15,9 @@ def main():
     
     if 'free_search' not in st.session_state:
         st.session_state.free_search = 0
+    
+    if 'search_history' not in st.session_state:
+        st.session_state.search_history = []
 
     if not st.session_state.logged_in:
         login_portal()
@@ -63,6 +66,11 @@ def display_main_app():
     
     def search():
         if api_key and search_query:
+            # Update search history
+            st.session_state.search_history.append(search_query)
+            if len(st.session_state.search_history) > 5:
+                st.session_state.search_history.pop(0)
+
             papers = search_papers(search_query, api_key)
             if papers:
                 # Display search results
@@ -100,6 +108,11 @@ def display_main_app():
                 api_key = DEFAULT_API
 
         search()
+    
+    # Display Search history
+    st.sidebar.subheader("Search History")
+    for past_query in st.session_state.search_history[::-1]:
+        st.sidebar.write(past_query)
 
 if __name__ == '__main__':
     main()
