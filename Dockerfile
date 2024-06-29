@@ -12,4 +12,4 @@ EXPOSE 8501
 
 ENV STREAMLIT_SERVER_PORT 8501
 
-CMD ["streamlit", "run", "login.py"]
+CMD ["streamlit", "run", "app.py"]
