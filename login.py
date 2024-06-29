@@ -30,7 +30,7 @@ def login_portal():
                 st.session_state.logged_in = True
                 st.session_state.username = username
                 st.success(f'Please wait, Logging in as {username}...')
-                time.sleep(5)
+                time.sleep(3)
                 st.rerun()
 
             else:

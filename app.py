@@ -4,8 +4,9 @@ import requests
 from transformers import pipeline, TFAutoModelForSeq2SeqLM, AutoTokenizer
 from login import login_portal
 from dotenv import load_dotenv
-from mongo_auth import store_api
+from mongo_auth import store_api, get_bookmarked_papers, bookmark_paper
 import os
+import time
 
 load_dotenv()
 DEFAULT_API = os.getenv("SEMANTIC_API_KEY")
@@ -19,6 +20,9 @@ def main():
     
     if 'search_history' not in st.session_state:
         st.session_state.search_history = []
+
+    if 'username' not in st.session_state:
+        st.session_state.username = ""
 
     if not st.session_state.logged_in:
         login_portal()
@@ -79,9 +83,15 @@ def display_main_app():
                     st.subheader(paper["title"])
                     st.write(paper["abstract"])
                     st.write(f"[Read more]({paper['url']})")
+                    
                     if st.button(f"Summarize {paper['title']}"):
                         summary = summarize_text(paper["abstract"])
                         st.write(f"**Summary:** {summary}")
+                    
+                    if st.button("Bookmark", key=paper['paperId']):
+                        bookmark_paper(st.session_state.username, paper['paperId'], paper['title'], paper['abstract'])
+                        st.success("Paper bookmarked successfully!")
+
             else:
                 st.error("No papers found.")
         else:
@@ -115,6 +125,17 @@ def display_main_app():
     st.sidebar.subheader("Search History")
     for past_query in st.session_state.search_history[::-1]:
         st.sidebar.write(past_query)
-
+    
+    # Display bookmarked papers
+    if st.sidebar.button("View Bookmarked Papers"):
+        st.subheader("Bookmarked Papers")
+        bookmarked_papers = get_bookmarked_papers(st.session_state.username)
+        for paper in bookmarked_papers:
+            st.write(f"### {paper['title']}")
+            st.write(paper['abstract'])
+            if st.button(f"Summarize {paper['title']}", key=paper['title']):
+                summary = summarize_text(paper['abstract'])
+                st.write(f"**Summary**: {summary}")
+            
 if __name__ == '__main__':
     main()

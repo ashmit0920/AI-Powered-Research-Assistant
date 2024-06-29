@@ -3,6 +3,9 @@ import streamlit as st
 from dotenv import load_dotenv
 import os
 import bcrypt
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 def get_mongo_client():
     load_dotenv()
@@ -47,3 +50,20 @@ def store_api(username, api_key):
         {"$set": {"api": api_key}}
     )
     # return result.modified_count > 0
+
+def bookmark_paper(username, paper_id, title, abstract):
+    try:
+        collection = get_user_collection()
+        result = collection.update_one(
+            {'username': username},
+            {'$push': {"bookmarked_papers": {"paper_id": paper_id, "title": title, "abstract": abstract}}}
+        )
+        logging.debug(f'Result: {result.raw_result}')
+        
+    except Exception as e:
+        logging.error(f'Error bookmarking paper: {e}')
+
+def get_bookmarked_papers(username):
+    collection = get_user_collection()
+    user = collection.find_one({"username": username}, {"bookmarked_papers": 1, "_id": 0})
+    return user.get("bookmarked_papers", []) if user else []
