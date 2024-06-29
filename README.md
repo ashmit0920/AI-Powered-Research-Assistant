@@ -12,10 +12,11 @@ Thats it! You would now see a summary of multiple research papers fetched from S
 
 ## Features
 
-- User authentication using MongoDB
+- Uses MongoDB to store user credentials, bookmarks, search history
 - Semantic Scholar API integration
 - Utilises BART Model for summarization tasks
 - Stores search history
+- Allows users to bookmark research papers
 
 ## Run the app
 
@@ -54,4 +55,4 @@ docker run -p 8501:8501 Lucid
 - Caching using Redis for optimization
 - Add search history based recommendations
 - User profiles
-- Persistent storage for recording free searches
+- Persistent storage for recording free searches/history
