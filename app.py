@@ -12,6 +12,7 @@ load_dotenv()
 DEFAULT_API = os.getenv("SEMANTIC_API_KEY")
 
 def main():
+    # Session state management
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False
     
@@ -23,7 +24,16 @@ def main():
 
     if 'username' not in st.session_state:
         st.session_state.username = ""
+    
+    if 'search_results' not in st.session_state:
+        st.session_state.search_results = []
 
+    if 'summarize_click' not in st.session_state:
+        st.session_state.summarize_click = None
+    
+    if 'bookmark_click' not in st.session_state:
+        st.session_state.bookmark_click = None
+    
     if not st.session_state.logged_in:
         login_portal()
     
@@ -65,7 +75,7 @@ def display_main_app():
             return []
             
     def summarize_text(text):
-        summary = summarizer(text, max_length=150, min_length=30, do_sample=False)[0]["summary_text"]
+        summary = summarizer(text, max_length=60, min_length=30, do_sample=False)[0]["summary_text"]
         return summary
     
     def search():
@@ -77,20 +87,24 @@ def display_main_app():
 
             papers = search_papers(search_query, api_key)
             if papers:
+                st.session_state.search_results = papers  # Store search results in session state
+                st.session_state.summarize_click = None
+                st.session_state.bookmark_click = None
+
                 # Display search results
-                st.header("Search Results")
-                for paper in papers:
-                    st.subheader(paper["title"])
-                    st.write(paper["abstract"])
-                    st.write(f"[Read more]({paper['url']})")
+                # st.header("Search Results")
+                # for paper in papers:
+                #     st.subheader(paper["title"])
+                #     st.write(paper["abstract"])
+                #     st.write(f"[Read more]({paper['url']})")
                     
-                    if st.button(f"Summarize {paper['title']}"):
-                        summary = summarize_text(paper["abstract"])
-                        st.write(f"**Summary:** {summary}")
+                #     if st.button(f"Summarize {paper['title']}"):
+                #         summary = summarize_text(paper["abstract"])
+                #         st.write(f"**Summary:** {summary}")
                     
-                    if st.button("Bookmark", key=paper['paperId']):
-                        bookmark_paper(st.session_state.username, paper['paperId'], paper['title'], paper['abstract'])
-                        st.success("Paper bookmarked successfully!")
+                #     if st.button("Bookmark", key=paper['paperId']):
+                #         bookmark_paper(st.session_state.username, paper['paperId'], paper['title'], paper['abstract'])
+                #         st.success("Paper bookmarked successfully!")
 
             else:
                 st.error("No papers found.")
@@ -121,6 +135,30 @@ def display_main_app():
 
         search()
     
+    if st.session_state.search_results:
+        for i, paper in enumerate(st.session_state.search_results):
+            st.write(f"### {paper['title']}")
+            st.write(paper['abstract'])
+            if st.button(f"Summarize {paper['title']}", key=f"summarize_{i}"):
+                st.session_state.summarize_click = i
+                # st.rerun()
+            if st.button(f"Bookmark {paper['title']}", key=f"bookmark_{i}"):
+                st.session_state.bookmark_click = i
+                # st.rerun()
+
+    # Handle button clicks
+    if st.session_state.summarize_click is not None:
+        paper = st.session_state.search_results[st.session_state.summarize_click]
+        summary = summarize_text(paper['abstract'])
+        st.write(f"**Summary of {paper['title']}**: {summary}")
+        st.session_state.summarize_click = None
+
+    if st.session_state.bookmark_click is not None:
+        paper = st.session_state.search_results[st.session_state.bookmark_click]
+        bookmark_paper(st.session_state.username, paper['paperId'], paper['title'], paper['abstract'])
+        st.success("Paper bookmarked successfully!")
+        st.session_state.bookmark_click = None
+
     # Display Search history
     st.sidebar.subheader("Search History")
     for past_query in st.session_state.search_history[::-1]:
