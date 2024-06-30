@@ -2,3 +2,6 @@ streamlit
 pandas
 requests
 transformers
+pymongo
+bcrypt
+python-dotenv
