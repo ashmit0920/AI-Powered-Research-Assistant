@@ -80,3 +80,16 @@ def get_search_history(username):
     collection = get_user_collection()
     user = collection.find_one({"username": username}, {"search_history": 1, "_id": 0})
     return user.get("search_history", []) if user else []
+
+def get_free_search(username):
+    collection = get_user_collection()
+    user = collection.find_one({'username': username})
+    if "free_searches" not in user:
+        collection.update_one({"username": username}, {"$set": {"free_searches": 0}})
+        return 0
+    
+    return user["free_searches"]
+
+def increment_free_search(username):
+    collection = get_user_collection()
+    collection.update_one({"username": username}, {"$inc": {"free_searches": 1}})

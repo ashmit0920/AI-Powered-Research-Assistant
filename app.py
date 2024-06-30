@@ -4,7 +4,7 @@ import requests
 from transformers import pipeline, TFAutoModelForSeq2SeqLM, AutoTokenizer
 from login import login_portal
 from dotenv import load_dotenv
-from mongo_auth import store_api, get_bookmarked_papers, bookmark_paper, add_search_history, get_search_history
+from mongo_auth import store_api, get_bookmarked_papers, bookmark_paper, add_search_history, get_search_history, get_free_search, increment_free_search
 import os
 import time
 
@@ -15,12 +15,6 @@ def main():
     # Session state management
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False
-    
-    if 'free_search' not in st.session_state:
-        st.session_state.free_search = 0
-    
-    if 'search_history' not in st.session_state:
-        st.session_state.search_history = []
 
     if 'username' not in st.session_state:
         st.session_state.username = ""
@@ -34,6 +28,7 @@ def main():
     if 'bookmark_click' not in st.session_state:
         st.session_state.bookmark_click = None
     
+    # Login portal
     if not st.session_state.logged_in:
         login_portal()
     
@@ -50,7 +45,7 @@ def display_main_app():
     st.set_page_config(page_title='Lucid - AI Research Assistant')
 
     st.title(":green[Lucid] - An AI-Powered :blue[Research Assistant]")
-    st.write(f"### Welcome! {st.session_state.username}")
+    st.write(f"### Welcome! :orange[{st.session_state.username}]")
     st.write("This web app is designed to help you discover and summarize research papers on your topic of interest.")
     st.write(f"Enter the topic you are interested in and your Semantic Scholar API Key in the input fields on the sidebar. In case you don't have an API key, you can get it from [this link](https://www.semanticscholar.org/product/api).")
     st.write(f"Wanna give it a try before getting your API Key? You can use our default API Key for 2 free searches!")
@@ -126,11 +121,11 @@ def display_main_app():
 
     if st.sidebar.button("Search"):
         if api_key_option == "Use a free search (upto 2)":
-            if st.session_state.free_search >= 2:
+            if get_free_search(st.session_state.username) >= 2:
                 st.error("You have used your 2 free searches. Please use your own API key.")
 
             else:
-                st.session_state.free_search += 1
+                increment_free_search(st.session_state.username)
                 api_key = DEFAULT_API
 
         search()
