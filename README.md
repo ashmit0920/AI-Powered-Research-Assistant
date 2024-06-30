@@ -12,8 +12,8 @@ Thats it! You would now see a summary of multiple research papers fetched from S
 
 ## Features
 
-- Uses MongoDB to store user credentials, bookmarks, search history
-- Semantic Scholar API integration
+- Uses MongoDB for storing all the user details
+- Offers 2 free searches to users
 - Utilises BART Model for summarization tasks
 - Stores search history
 - Allows users to bookmark research papers
@@ -28,7 +28,7 @@ Install the required packages.
 ```
 pip install -r requirements.txt
 ```
-Inside the .streamlit folder, create a file named secrets.toml and add your Semantic Scholar API Key and MongoDB URI.
+Inside the .streamlit folder, create a file named ```secrets.toml``` and add your Semantic Scholar API Key and MongoDB URI.
 ```
 SEMANTIC_API_KEY = "your-api-key"
 MONGO_URI = "your-mongodb-connection-string"
