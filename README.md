@@ -28,10 +28,10 @@ Install the required packages.
 ```
 pip install -r requirements.txt
 ```
-Create a .env file and add your Semantic Scholar API Key and MongoDB URI.
+Inside the .streamlit folder, create a file named secrets.toml and add your Semantic Scholar API Key and MongoDB URI.
 ```
-SEMANTIC_API_KEY='your-api-key'
-MONGO_URI='your-mongodb-connection-string'
+SEMANTIC_API_KEY = "your-api-key"
+MONGO_URI = "your-mongodb-connection-string"
 ```
 Run the app.
 ```
@@ -40,7 +40,7 @@ streamlit run app.py
 
 ## Run using Docker
 
-After creating the .env file, build the docker image.
+After creating the secrets.toml file, build the docker image.
 ```
 docker build -t Lucid .
 ```
@@ -52,7 +52,7 @@ docker run -p 8501:8501 Lucid
 
 ## Future Updates
 
+- Restructured code using ```st.Page``` and ```st.navigate``` methods
 - Caching using Redis for optimization
-- Add search history based recommendations
+- Search history based recommendations
 - User profiles
-- Persistent storage for recording free searches/history
