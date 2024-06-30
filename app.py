@@ -8,8 +8,7 @@ from mongo_auth import store_api, get_bookmarked_papers, bookmark_paper, add_sea
 import os
 import time
 
-load_dotenv()
-DEFAULT_API = os.getenv("SEMANTIC_API_KEY")
+DEFAULT_API = st.secrets.SEMANTIC_API_KEY
 
 def main():
     # Session state management
