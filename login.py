@@ -3,8 +3,9 @@ from mongo_auth import register_user, authenticate_user
 import time
 
 def login_portal():
+    st.set_page_config(page_title='Lucid - AI Research Assistant')
 
-    st.title('AI Powered Research Assistant')
+    st.title(':green[Lucid] - An AI-Powered :blue[Research Assistant]')
 
     # Sidebar options
     option = st.sidebar.selectbox('Choose Option', ('Login', 'Signup'))

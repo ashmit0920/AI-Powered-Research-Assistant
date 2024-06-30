@@ -4,7 +4,7 @@ import requests
 from transformers import pipeline, TFAutoModelForSeq2SeqLM, AutoTokenizer
 from login import login_portal
 from dotenv import load_dotenv
-from mongo_auth import store_api, get_bookmarked_papers, bookmark_paper
+from mongo_auth import store_api, get_bookmarked_papers, bookmark_paper, add_search_history, get_search_history
 import os
 import time
 
@@ -47,6 +47,8 @@ def display_main_app():
     model = TFAutoModelForSeq2SeqLM.from_pretrained(model_name)
     summarizer = pipeline("summarization", model=model, tokenizer=tokenizer)
 
+    st.set_page_config(page_title='Lucid - AI Research Assistant')
+
     st.title(":green[Lucid] - An AI-Powered :blue[Research Assistant]")
     st.write(f"### Welcome! {st.session_state.username}")
     st.write("This web app is designed to help you discover and summarize research papers on your topic of interest.")
@@ -81,9 +83,7 @@ def display_main_app():
     def search():
         if api_key and search_query:
             # Update search history
-            st.session_state.search_history.append(search_query)
-            if len(st.session_state.search_history) > 5:
-                st.session_state.search_history.pop(0)
+            add_search_history(st.session_state.username, search_query)
 
             papers = search_papers(search_query, api_key)
             if papers:
@@ -161,8 +161,8 @@ def display_main_app():
 
     # Display Search history
     st.sidebar.subheader("Search History")
-    for past_query in st.session_state.search_history[::-1]:
-        st.sidebar.write(past_query)
+    for past_query in get_search_history(st.session_state.username)[::-1]:
+        st.sidebar.write(f"{past_query['query']} :grey[at {past_query['timestamp'].time().hour}:{past_query['timestamp'].time().minute}, {past_query['timestamp'].date()}]")
     
     # Display bookmarked papers
     if st.sidebar.button("View Bookmarked Papers"):
