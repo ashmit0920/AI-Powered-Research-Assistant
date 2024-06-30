@@ -9,7 +9,7 @@ import datetime
 logging.basicConfig(level=logging.DEBUG)
 
 def get_mongo_client():
-    client = MongoClient(st.secrets.MONGO_URI)
+    client = MongoClient(st.secrets.MONGO_URI2)
     return client
 
 def get_user_collection():
