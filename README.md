@@ -1,4 +1,4 @@
-# **:green[Lucid] - An AI Powered :blue[Research Assistant]**
+# **Lucid - An AI Powered Research Assistant**
 
 Lucid is built using Streamlit, and powered by Meta's BART (Bi-directional and Auto-Regressive Transformers) model. The BART-Large-CNN model used for this project is especially fine-tuned for summarization tasks.
 
